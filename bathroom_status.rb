@@ -1,20 +1,22 @@
 require 'sinatra'
 
 configure do
-  set :bathrooms, {
-    'baltar' => 'The Dave Baltar Lifetime Achievement Bathroom',
-    '125' => '125'
+  set :bathrooms,
+  {
+    baltar:
+      { name: 'The Dave Baltar Lifetime Achievement Bathroom',
+        status: 'closed'
+      }
   }
 
   set :open, %w{ simple_smile +1 toilet poop ghost }
   set :closed, %w{ thumbsdown heavy_exclamation_mark warning non-potable_water no_entry }
-  set :baltar_open_status, 'closed'
 end
 
 get '/' do
-  if params[:text].empty?
-    availability('baltar')
-  elsif bathrooms[short_name]
+  if !params.has_key?(:text) || params[:text].empty?
+    availability(:baltar)
+  elsif bathrooms[short_name.to_sym]
     availability(short_name)
   else
     "I don't know that bathroom. Try #{bathrooms.keys.join(' or ')}"
@@ -22,19 +24,15 @@ get '/' do
 end
 
 post '/update' do
-  #params[:bathroom]
-  settings.baltar_open_status = params[:status]
-end
-
-get '/status' do
-  settings.baltar_open_status
+  # hard code baltar for right now
+  settings.bathrooms[:baltar][:status] = params[:status]
 end
 
 def availability(short_name)
-  if short_name == 'baltar'
-    "#{open_icon} #{bathrooms[short_name]} is open for business."
+  if settings.bathrooms[short_name][:status] == 'open'
+    "#{open_icon} #{settings.bathrooms[short_name][:name]} is open for business."
   else
-    "#{closed_icon} #{bathrooms[short_name]} is occupied."
+    "#{closed_icon} #{settings.bathrooms[short_name][:name]} is occupied."
   end
 end
 
