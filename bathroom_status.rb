@@ -8,7 +8,7 @@ configure do
 
   set :open, %w{ simple_smile +1 toilet poop ghost }
   set :closed, %w{ thumbsdown heavy_exclamation_mark warning non-potable_water no_entry }
-
+  set :baltar_open_status, 'closed'
 end
 
 get '/' do
@@ -21,6 +21,14 @@ get '/' do
   end
 end
 
+post '/update' do
+  #params[:bathroom]
+  settings.baltar_open_status = params[:status]
+end
+
+get '/status' do
+  settings.baltar_open_status
+end
 
 def availability(short_name)
   if short_name == 'baltar'
