@@ -7,13 +7,16 @@ configure do
   bathrooms.map{|k,v|  v["status"]= "open"} # default status to open
   set :bathrooms, bathrooms
 
+  default_bathroom = bathrooms.map{|key, value| key if value["default"]}.compact[0]
+  set :default, default_bathroom
+
   set :open, %w{ simple_smile +1 toilet poop }
   set :closed, %w{ thumbsdown heavy_exclamation_mark warning non-potable_water no_entry }
 end
 
 get '/' do
-  if !params.has_key?("text") || params["text"].empty?
-    availability("balter")
+  if settings.default && !params.has_key?("text") || params["text"].empty?
+    availability(settings.default)
   elsif bathrooms[short_name]
     availability(short_name)
   else
@@ -22,9 +25,10 @@ get '/' do
 end
 
 post '/update' do
-  # hard code baltar for right now
+  # hard code default for right now
   short_name = params[:name]
-  settings.bathrooms["balter"][:status] = params[:status]
+
+  settings.bathrooms[settings.default]["status"] = params[:status]
 end
 
 def availability(short_name)
@@ -51,5 +55,3 @@ end
 def closed_icon
   ':' + settings.closed.sample + ':'
 end
-
-
