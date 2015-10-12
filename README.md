@@ -52,6 +52,7 @@ You'll need:
 
 ### Install
 Figure out how you are going to mount it. The BeagleBone will need to remain plugged into the power adapter and the reed switch will need to reach the doorframe. I reccomend attaching everything to the outside of the bathroom door rather than the inside to make maintainace more pleasent.
+
 1. Secure the wire connections with e-tape.
 1. Plug the 5VDC power adapter in near the door. 
 1. Secure the beaglebone ( I used velco tape)
