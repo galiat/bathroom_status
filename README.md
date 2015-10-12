@@ -1,4 +1,10 @@
-## Server
+## Remote Server
+run `cp bathroom-config-sample.json bathroom-config.json`
+update config.json
+Deploy code to server
+If you want to run locally,
+  1. type `rackup`
+  1. visit localhost:9292
 
 ## Beagle
 
