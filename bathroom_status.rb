@@ -5,7 +5,7 @@ configure do
   {
     baltar:
       { name: 'The Dave Baltar Lifetime Achievement Bathroom',
-        status: 'closed'
+        status: 'open'
       }
   }
 
